@@ -30,7 +30,8 @@ import network_util
 import zmq
 import random
 import hashlib
-
+from util import logmsg
+from util import LogMsgType
 
 ioloop.install()
 
@@ -310,6 +311,7 @@ class CryptoTransportLayer(TransportLayer):
 
         if seed_mode == 0 and not dev_mode:
             self.start_ip_address_checker()
+
 
     def setup_callbacks(self):
         self.add_callbacks([('hello', self._ping),
@@ -817,7 +819,8 @@ class CryptoTransportLayer(TransportLayer):
         nickname = msg.get('senderNick')[:120]
 
         self.dht.add_known_node((ip, port, guid, nickname))
-        self.log.info('ON MESSAGE %s' % json.dumps(msg, ensure_ascii=False))
+        
+        logmsg(self.log.info, LogMsgType.ONMSG , json.dumps(msg, ensure_ascii=False))
 
         self.dht.add_peer(self, uri, pubkey, guid, nickname)
         self.log.debug('Callbacks %s' % self.callbacks)
