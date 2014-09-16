@@ -1,4 +1,4 @@
-## Build Docker Image
+## Build a Docker Image
 
 Install [docker/docker](https://github.com/docker/docker) and [fig](https://github.com/docker/fig) first.
 
@@ -15,9 +15,15 @@ $ sudo fig up -d
 $ sudo fig logs
 ```
 
-OB node http://DOCKER_HOST:8888/
+OpenBazaar  http://DOCKER_HOST:8888/
 
-ElasticSearch/Logstash/Kibana http://DOCKER_HOST:9280/
+Kibana http://DOCKER_HOST:9280/
+
+ElasticSearch http://DOCKER_HOST:9200/
+
+## screenshots
+
+![ob-geoip-logstash](https://cloud.githubusercontent.com/assets/1840874/4216758/a0af7b28-38de-11e4-941c-ed4339a8552b.jpg)
 
 ## ELK example
 
