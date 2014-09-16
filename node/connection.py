@@ -11,6 +11,7 @@ import obelisk
 import zmq
 import errno
 import json
+from avroproto import avroproto
 
 ioloop.install()
 
@@ -147,13 +148,12 @@ class CryptoPeerConnection(PeerConnection):
                         handshake_cb()
 
             self.send_raw(
-                json.dumps({
-                    'type': 'hello',
-                    'pubkey': self.transport.pubkey,
-                    'uri': self.transport.uri,
-                    'senderGUID': self.transport.guid,
-                    'senderNick': self.transport.nickname
-                }),
+                avroproto.hello_json(
+                    self.transport.pubkey,
+                    self.transport.uri,
+                    self.transport.guid,
+                    self.transport.nickname
+                ),
                 cb
             )
         else:

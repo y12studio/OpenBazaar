@@ -20,3 +20,5 @@ tornado==4.0.1
 websocket-client==0.16.0
 wsgiref==0.1.2
 zope.interface==4.1.1
+avro==1.7.7
+avro_json_serializer==0.4.1

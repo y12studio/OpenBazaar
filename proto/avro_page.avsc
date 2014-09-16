@@ -1,0 +1,26 @@
+{
+  "namespace": "ob.avro.draft",
+  "type": "record",
+  "name": "ProtoPage",
+  "fields": [
+    {
+      "name": "type",
+      "type": {"type": "enum", "name": "enumtype","symbols": ["page"]}
+    },
+    {"type": "string","name": "text"},
+    {"type": "string","name": "bitmessage"},
+    {"type": "string","name": "arbiter_description"},
+    {"type": "string","name": "email"},
+    {"type": "string","name": "nickname"},
+    {"type": "string","name": "PGPPubKey"},
+    {"type": "string","name": "arbiter"},
+    {"type": "string","name": "guid"},
+    {"type": "string","name": "notary"},
+    {"type": "string","name": "sin"},
+    {"type": "string","name": "pubkey"},
+    {"type": "string","name": "senderGUID"},
+    {"type": "string","name": "senderNick"},
+    {"type": "string","name": "uri"}
+  ]
+}
+

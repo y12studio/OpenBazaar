@@ -1,0 +1,15 @@
+{
+  "namespace": "ob.avro.draft",
+  "type": "record",
+  "name": "ProtoHello",
+  "fields": [
+    {
+      "name": "type",
+      "type": {"type": "enum", "name": "enumtype","symbols": ["hello"]}
+    },
+    {"type": "string","name": "pubkey"},
+    {"type": "string","name": "senderGUID"},
+    {"type": "string","name": "senderNick"},
+    {"type": "string","name": "uri"}
+  ]
+}
