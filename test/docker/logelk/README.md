@@ -1,4 +1,4 @@
-## Build a Docker Image
+## Build all docker images
 
 Install [docker/docker](https://github.com/docker/docker) and [fig](https://github.com/docker/fig) first.
 
@@ -8,12 +8,25 @@ $ cd test/docker/logelk
 $ bash build.sh -a
 ```
 
-## Run a node with a elk container.
+## Run a node base on github offical repo master branch with a elk container.
 
 ```
 $ sudo fig up -d
 $ sudo fig logs
 ```
+
+## Run a node base on your fork repo and branch with a elk container.
+
+example git_url = https://github.com/y12studio/OpenBazaar and branch = hello_ob_fix
+
+```
+$ sudo fig stop
+$ bash build.sh -k "https://github.com/y12studio/OpenBazaar hello_ob_fix"
+$ sudo fig up -d
+$ sudo fig logs
+```
+
+## Browser URL
 
 OpenBazaar  http://DOCKER_HOST:8888/
 

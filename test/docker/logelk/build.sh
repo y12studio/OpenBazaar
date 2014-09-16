@@ -25,7 +25,8 @@ while getopts ":vhoebapk:" optname; do
       ;;
     "o")
       echo "build the openbazaar image"
-      $DOCKER build -t obtest/ob --rm=true ob
+      $DOCKER build -t obtest/ob:gmaster --rm=true ob
+      $DOCKER tag obtest/ob:gmaster obtest/ob:latest
       exit 0;
       ;;
     "k")
@@ -42,7 +43,12 @@ while getopts ":vhoebapk:" optname; do
       git clone --depth 1 -b $GBRANCH $GURL $TARGET
       $DOCKER run -t -v $TARGET:$TARGET obtest/ob /opt/update.sh
       CID=$($DOCKER ps -q -l)
-      $DOCKER commit $CID obtest/ob:branch > /dev/null
+      # Configuration changes to be applied when the image is launched with docker run
+      # https://github.com/docker/docker/issues/4362
+      # $DOCKER commit $CID -run='{"Cmd": ["/sbin/my_init"]' obtest/ob:fbranch > /dev/null
+      # Use fig to privide cmd.
+      $DOCKER commit $CID obtest/ob:fbranch > /dev/null
+      $DOCKER tag obtest/ob:fbranch obtest/ob:latest
       $DOCKER rm $CID
       exit 0;
       ;;
