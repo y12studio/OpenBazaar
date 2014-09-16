@@ -14,4 +14,4 @@ def open_default_webbrowser(url):
         print "[openbazaar:utils.open_default_webbrowser] Could not open default web browser at", url
 
 def logmsg(logger, logMsgType, msg):
-    logger('%s : %s' % (logMsgType.name, msg))
+    logger('[%s] - %s' % (logMsgType.name, msg))

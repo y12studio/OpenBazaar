@@ -20,7 +20,7 @@ class TestUtil(unittest.TestCase):
             if not hasattr(sys.stdout, "getvalue"):
                 self.fail("need to run in buffered mode")
             output = sys.stdout.getvalue().strip()
-            self.assertEquals(output,'ONMSG : TEST HERE FOO')
+            self.assertEquals(output,'[ONMSG] - TEST HERE FOO')
         finally:
             logger.removeHandler(stream_handler)
 
