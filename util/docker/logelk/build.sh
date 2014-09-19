@@ -19,15 +19,16 @@ if [ $# == 0 ] ; then
 fi
 
 function updateimg {
-  $DOCKER run -t -v $TARGET:$TARGET "$OBIMG:gmaster" /opt/update.sh
+  echo update image from "$OBIMG:$1" to "$OBIMG:$2"
+  $DOCKER run -t -v $TARGET:$TARGET "$OBIMG:$1" /opt/update.sh
   CID=$($DOCKER ps -q -l)
-  $DOCKER commit "$CID" "$OBIMG:$1" > /dev/null
-  $DOCKER tag "$OBIMG:$1" "$OBIMG:latest"
-  echo [DOCKER] tag "$OBIMG:$1" "$OBIMG:latest"
+  $DOCKER commit "$CID" "$OBIMG:$2" > /dev/null
+  $DOCKER tag "$OBIMG:$2" "$OBIMG:latest"
+  echo [DOCKER] tag "$OBIMG:$2" "$OBIMG:latest"
   $DOCKER rm "$CID"
-} 
+}
 
-while getopts ":vhoebapk:c:" optname; do
+while getopts ":vhoebaptk:c:" optname; do
   case "$optname" in
     "v")
       echo "Version $VERSION"
@@ -35,8 +36,8 @@ while getopts ":vhoebapk:c:" optname; do
       ;;
     "o")
       echo "build the openbazaar image"
-      $DOCKER build -t "$OBIMG":gmaster --rm=true ob
-      $DOCKER tag "$OBIMG":gmaster "$OBIMG":latest
+      $DOCKER build -t "$OBIMG:gmaster" --rm=true --no-cache=true ob
+      $DOCKER tag "$OBIMG:gmaster" "$OBIMG:latest"
       exit 0;
       ;;
     "k")
@@ -51,17 +52,33 @@ while getopts ":vhoebapk:c:" optname; do
          rm -rf $TARGET
       fi
       git clone --depth 1 -b $GBRANCH $GURL $TARGET
-      updateimg fbranch
+      updateimg gmaster fbranch
       exit 0;
       ;;
     "c")
-      #  bash build.sh -c "/home/ob/git/OpenBazaar"
+      #  ex : bash build.sh -c "/home/ob/git/OpenBazaar"
       echo build the local dev branch openbazaar image "$OPTARG"
       if [ -d $TARGET ]; then 
          rm -rf $TARGET
       fi
       /bin/cp -R "$OPTARG" $TARGET
-      updateimg dev
+      rm -rf $TARGET/env  $TARGET/db/* $TARGET/installers/*
+      updateimg testing dev
+      # Test New Code
+      $DOCKER run -w /bazaar "$OBIMG" make
+      exit 0;
+      ;;
+    "t")
+      #  bash build.sh -t
+      echo build the testing openbazaar image
+      if [ -d $TARGET ]; then
+         rm -rf $TARGET
+      fi
+      # touch
+      mkdir -p $TARGET && touch $TARGET/.imgtesting
+      updateimg gmaster testing
+      # Test New Image
+      $DOCKER run -w /bazaar "$OBIMG" make
       exit 0;
       ;;
     "e")
@@ -83,7 +100,7 @@ while getopts ":vhoebapk:c:" optname; do
       echo "build all image"
       $DOCKER build -t obtest/base base
       $DOCKER build -t obtest/elk elk
-      $DOCKER build -t obtest/ob ob
+      $DOCKER build -t obtest/ob --rm=true --no-cache=true ob
       exit 0;
       ;;
     "h")
@@ -118,4 +135,4 @@ fi
 
 # -----------------------------------------------------------------
 trap 'rm -f $LOCK_FILE' EXIT
-touch $LOCK_FILE 
+touch $LOCK_FILE
